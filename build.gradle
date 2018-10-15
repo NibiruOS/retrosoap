@@ -112,7 +112,8 @@ dependencies {
     }
     compile "javax.inject:javax.inject:1"
 	compile "com.google.code.findbugs:jsr305:2.0.3"
-    compile 'net.sf.sociaal:xmlpull-xpp3:3.0.0.20130526'
+    compileOnly 'net.sf.sociaal:xmlpull-xpp3:3.0.0.20130526'
+    testCompile 'net.sf.sociaal:xmlpull-xpp3:3.0.0.20130526'
     testCompile 'junit:junit:4.12'
     testCompile "org.easymock:easymock:3.6"
 }

@@ -132,14 +132,7 @@ public class ResponseConverterTest {
             fail("SoapFault expected");
         } catch (SoapFault expected) {
             // Assertions
-            assertEquals("\n" +
-                            "         <faultcode xmlns:ns1=\"http://xml.apache.org/axis/\">ns1:coe.alreadyAuthenticated</faultcode>\n" +
-                            "         <faultstring>El CEE ya posee un TA valido para el acceso al WSN solicitado</faultstring>\n" +
-                            "         <detail>\n" +
-                            "            <ns2:exceptionName xmlns:ns2=\"http://xml.apache.org/axis/\">gov.afip.desein.dvadac.sua.view.wsaa.LoginFault</ns2:exceptionName>\n" +
-                            "            <ns3:hostname xmlns:ns3=\"http://xml.apache.org/axis/\">lujuria.afip.gov.ar</ns3:hostname>\n" +
-                            "         </detail>\n" +
-                            "      ",
+            assertEquals("ns1:coe.alreadyAuthenticated - El CEE ya posee un TA valido para el acceso al WSN solicitado",
                     expected.getMessage());
         }
 
