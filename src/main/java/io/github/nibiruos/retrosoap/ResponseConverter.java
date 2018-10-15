@@ -47,9 +47,6 @@ class ResponseConverter<T>
             QName body = new QName(soapSpec.getEnvelopeNamespace(),
                     RetroSoapFactory.BODY_TAG);
 
-            QName fault = new QName(soapSpec.getEnvelopeNamespace(),
-                    RetroSoapFactory.FAULT_TAG);
-
             parser.next();
             while (!parser.isTagStart(body)) {
                 checkDocumentEnd(parser, "Body start");
@@ -61,15 +58,7 @@ class ResponseConverter<T>
                 parser.next();
             }
 
-            if (parser.isTagStart(fault)) {
-                StringBuilder error = new StringBuilder();
-                parser.next();
-                while (!parser.isTagEnd(fault) || parser.isDocumentEnd()) {
-                    error.append(parser.getText());
-                    parser.next();
-                }
-                throw new SoapFault(error.toString());
-            }
+            throwFault(parser);
 
             while (!parser.isTagEnd(body)) {
                 checkDocumentEnd(parser, "Body end");
@@ -112,6 +101,47 @@ class ResponseConverter<T>
         }
     }
 
+    private void throwFault(ParserAdapter parser) {
+        QName fault = new QName(soapSpec.getEnvelopeNamespace(),
+                RetroSoapFactory.FAULT_TAG);
+
+        if (parser.isTagStart(fault)) {
+            boolean inCode = false;
+            boolean inString = false;
+
+            QName faultCode = new QName("",
+                    RetroSoapFactory.FAULT_CODE_TAG);
+
+            QName faultString = new QName("",
+                    RetroSoapFactory.FAULT_STRING_TAG);
+
+            StringBuilder code = new StringBuilder();
+            StringBuilder string = new StringBuilder();
+            parser.next();
+
+            while (!parser.isTagEnd(fault) || parser.isDocumentEnd()) {
+                if (parser.isTagEnd(faultCode)) {
+                    inCode = false;
+                } else if (parser.isTagEnd(faultString)) {
+                    inString = false;
+                }
+                if (inCode) {
+                    code.append(parser.getText());
+                } else if (inString) {
+                    string.append(parser.getText());
+                }
+                if (parser.isTagStart(faultCode)) {
+                    inCode = true;
+                } else if (parser.isTagStart(faultString)) {
+                    inString = true;
+                }
+                parser.next();
+            }
+            throw new SoapFault(code.toString(),
+                    string.toString());
+        }
+    }
+
     private static void checkDocumentEnd(ParserAdapter parser, String requiredTag) {
         if (parser.isDocumentEnd()) {
             throw new RuntimeException(requiredTag + " tag not found.");
@@ -139,4 +169,5 @@ class ResponseConverter<T>
             serializer.setPrefix(prefix, namespace);
         }
     }
+
 }

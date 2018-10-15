@@ -20,6 +20,8 @@ import static java.util.Objects.requireNonNull;
 public class RetroSoapFactory extends Converter.Factory {
     static final String BODY_TAG = "Body";
     static final String FAULT_TAG = "Fault";
+    static final String FAULT_CODE_TAG = "faultcode";
+    static final String FAULT_STRING_TAG = "faultstring";
     static final String ENVELOPE_TAG = "Envelope";
     static final String HEADER_TAG = "Header";
     static final String SOAP_ENVELOPE_PREFIX = "soapenv";
