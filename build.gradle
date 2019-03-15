@@ -28,7 +28,7 @@ project.ext {
     nibiruId = 'retrosoap'
 }
 
-version = '0.1-SNAPSHOT'
+version = '1.0.0'
 group = 'io.github.nibiruos.retrosoap'
 
 sourceCompatibility = 1.7
@@ -105,7 +105,7 @@ dependencies {
         exclude group: 'stax', module: 'stax'
         exclude group: 'xpp3', module: 'xpp3'
     }
-    compile('org.simpleframework:simple-xml:2.7.+') {
+    compile('org.simpleframework:simple-xml:2.7.1') {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
